@@ -43,6 +43,7 @@ const (
 	pluginBackend   = "plugin"
 	grpcBackend     = "grpc"
 	jsBackend       = "js"
+	clickhouseBackend       = "clickhouse"
 
 	// checks
 	aclCheck       = "acl"
@@ -63,6 +64,7 @@ var allowedBackendsOptsPrefix = map[string]string{
 	pluginBackend:   "plugin",
 	grpcBackend:     "grpc",
 	jsBackend:       "js",
+	clickhouseBackend:       "clickhouse",
 }
 
 // Initialize sets general options, tries to build the backends and register their checkers.
@@ -200,6 +202,14 @@ func (b *Backends) addBackends(authOpts map[string]string, logLevel log.Level, b
 			} else {
 				log.Infof("Backend registered: %s", beIface.GetName())
 				b.backends[jsBackend] = beIface.(*Javascript)
+			}
+		case clickhouseBackend:
+			beIface, err = NewClickhouse(authOpts, logLevel, hasher)
+			if err != nil {
+				log.Fatalf("Backend register error: couldn't initialize %s backend with error %s.", bename, err)
+			} else {
+				log.Infof("Backend registered: %s", beIface.GetName())
+				b.backends[clickhouseBackend] = beIface.(Clickhouse)
 			}
 		case pluginBackend:
 			beIface, err = NewCustomPlugin(authOpts, logLevel)

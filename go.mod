@@ -3,6 +3,7 @@ module github.com/iegomez/mosquitto-go-auth
 go 1.12
 
 require (
+	github.com/ClickHouse/clickhouse-go v1.4.5 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-redis/redis/v8 v8.0.0-beta.2
 	github.com/go-sql-driver/mysql v1.5.0
